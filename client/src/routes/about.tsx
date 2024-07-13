@@ -5,5 +5,6 @@ export const Route = createFileRoute('/about')({
 });
 
 function About() {
+  const { id } = Route.useParams();
   return <div className="p-2">Hello from About!</div>;
 }

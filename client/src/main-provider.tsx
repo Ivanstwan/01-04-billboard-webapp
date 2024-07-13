@@ -1,9 +1,13 @@
-import React from 'react';
+import { TooltipProvider } from './components/ui/tooltip';
 
-type AppProviderProps = { children: React.ReactNode };
-
-const AppProvider = ({ children }: AppProviderProps) => {
-  return <>{children}</>;
+type AppProviderProps = {
+  children: React.ReactNode;
 };
 
-export default AppProvider;
+export const AppProvider = ({ children }: AppProviderProps) => {
+  return (
+    <>
+      <TooltipProvider>{children}</TooltipProvider>
+    </>
+  );
+};

@@ -14,7 +14,18 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as AboutImport } from './routes/about'
-import { Route as ListingAddListingImport } from './routes/listing/add-listing'
+import { Route as ExampleImport } from './routes/_example'
+import { Route as AuthenticatedImport } from './routes/_authenticated'
+import { Route as ExampleExampleImport } from './routes/_example/example'
+import { Route as ExampleDashboard06Import } from './routes/_example/dashboard-06'
+import { Route as ExampleDashboard05Import } from './routes/_example/dashboard-05'
+import { Route as ExampleDashboard04Import } from './routes/_example/dashboard-04'
+import { Route as ExampleDashboard03Import } from './routes/_example/dashboard-03'
+import { Route as ExampleAuthenticate03Import } from './routes/_example/authenticate-03'
+import { Route as ExampleAuthenticate02Import } from './routes/_example/authenticate-02'
+import { Route as ExampleAuthenticate01Import } from './routes/_example/authenticate-01'
+import { Route as AuthenticatedListingAddListingImport } from './routes/_authenticated/listing/add-listing'
+import { Route as AuthenticatedListingIdImport } from './routes/_authenticated/listing/$id'
 
 // Create Virtual Routes
 
@@ -27,14 +38,70 @@ const AboutRoute = AboutImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const ExampleRoute = ExampleImport.update({
+  id: '/_example',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AuthenticatedRoute = AuthenticatedImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const IndexLazyRoute = IndexLazyImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
 
-const ListingAddListingRoute = ListingAddListingImport.update({
-  path: '/listing/add-listing',
-  getParentRoute: () => rootRoute,
+const ExampleExampleRoute = ExampleExampleImport.update({
+  path: '/example',
+  getParentRoute: () => ExampleRoute,
+} as any)
+
+const ExampleDashboard06Route = ExampleDashboard06Import.update({
+  path: '/dashboard-06',
+  getParentRoute: () => ExampleRoute,
+} as any)
+
+const ExampleDashboard05Route = ExampleDashboard05Import.update({
+  path: '/dashboard-05',
+  getParentRoute: () => ExampleRoute,
+} as any)
+
+const ExampleDashboard04Route = ExampleDashboard04Import.update({
+  path: '/dashboard-04',
+  getParentRoute: () => ExampleRoute,
+} as any)
+
+const ExampleDashboard03Route = ExampleDashboard03Import.update({
+  path: '/dashboard-03',
+  getParentRoute: () => ExampleRoute,
+} as any)
+
+const ExampleAuthenticate03Route = ExampleAuthenticate03Import.update({
+  path: '/authenticate-03',
+  getParentRoute: () => ExampleRoute,
+} as any)
+
+const ExampleAuthenticate02Route = ExampleAuthenticate02Import.update({
+  path: '/authenticate-02',
+  getParentRoute: () => ExampleRoute,
+} as any)
+
+const ExampleAuthenticate01Route = ExampleAuthenticate01Import.update({
+  path: '/authenticate-01',
+  getParentRoute: () => ExampleRoute,
+} as any)
+
+const AuthenticatedListingAddListingRoute =
+  AuthenticatedListingAddListingImport.update({
+    path: '/listing/add-listing',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+
+const AuthenticatedListingIdRoute = AuthenticatedListingIdImport.update({
+  path: '/listing/$id',
+  getParentRoute: () => AuthenticatedRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -48,6 +115,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexLazyImport
       parentRoute: typeof rootRoute
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthenticatedImport
+      parentRoute: typeof rootRoute
+    }
+    '/_example': {
+      id: '/_example'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof ExampleImport
+      parentRoute: typeof rootRoute
+    }
     '/about': {
       id: '/about'
       path: '/about'
@@ -55,12 +136,75 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutImport
       parentRoute: typeof rootRoute
     }
-    '/listing/add-listing': {
-      id: '/listing/add-listing'
+    '/_example/authenticate-01': {
+      id: '/_example/authenticate-01'
+      path: '/authenticate-01'
+      fullPath: '/authenticate-01'
+      preLoaderRoute: typeof ExampleAuthenticate01Import
+      parentRoute: typeof ExampleImport
+    }
+    '/_example/authenticate-02': {
+      id: '/_example/authenticate-02'
+      path: '/authenticate-02'
+      fullPath: '/authenticate-02'
+      preLoaderRoute: typeof ExampleAuthenticate02Import
+      parentRoute: typeof ExampleImport
+    }
+    '/_example/authenticate-03': {
+      id: '/_example/authenticate-03'
+      path: '/authenticate-03'
+      fullPath: '/authenticate-03'
+      preLoaderRoute: typeof ExampleAuthenticate03Import
+      parentRoute: typeof ExampleImport
+    }
+    '/_example/dashboard-03': {
+      id: '/_example/dashboard-03'
+      path: '/dashboard-03'
+      fullPath: '/dashboard-03'
+      preLoaderRoute: typeof ExampleDashboard03Import
+      parentRoute: typeof ExampleImport
+    }
+    '/_example/dashboard-04': {
+      id: '/_example/dashboard-04'
+      path: '/dashboard-04'
+      fullPath: '/dashboard-04'
+      preLoaderRoute: typeof ExampleDashboard04Import
+      parentRoute: typeof ExampleImport
+    }
+    '/_example/dashboard-05': {
+      id: '/_example/dashboard-05'
+      path: '/dashboard-05'
+      fullPath: '/dashboard-05'
+      preLoaderRoute: typeof ExampleDashboard05Import
+      parentRoute: typeof ExampleImport
+    }
+    '/_example/dashboard-06': {
+      id: '/_example/dashboard-06'
+      path: '/dashboard-06'
+      fullPath: '/dashboard-06'
+      preLoaderRoute: typeof ExampleDashboard06Import
+      parentRoute: typeof ExampleImport
+    }
+    '/_example/example': {
+      id: '/_example/example'
+      path: '/example'
+      fullPath: '/example'
+      preLoaderRoute: typeof ExampleExampleImport
+      parentRoute: typeof ExampleImport
+    }
+    '/_authenticated/listing/$id': {
+      id: '/_authenticated/listing/$id'
+      path: '/listing/$id'
+      fullPath: '/listing/$id'
+      preLoaderRoute: typeof AuthenticatedListingIdImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/listing/add-listing': {
+      id: '/_authenticated/listing/add-listing'
       path: '/listing/add-listing'
       fullPath: '/listing/add-listing'
-      preLoaderRoute: typeof ListingAddListingImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof AuthenticatedListingAddListingImport
+      parentRoute: typeof AuthenticatedImport
     }
   }
 }
@@ -69,8 +213,21 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren({
   IndexLazyRoute,
+  AuthenticatedRoute: AuthenticatedRoute.addChildren({
+    AuthenticatedListingIdRoute,
+    AuthenticatedListingAddListingRoute,
+  }),
+  ExampleRoute: ExampleRoute.addChildren({
+    ExampleAuthenticate01Route,
+    ExampleAuthenticate02Route,
+    ExampleAuthenticate03Route,
+    ExampleDashboard03Route,
+    ExampleDashboard04Route,
+    ExampleDashboard05Route,
+    ExampleDashboard06Route,
+    ExampleExampleRoute,
+  }),
   AboutRoute,
-  ListingAddListingRoute,
 })
 
 /* prettier-ignore-end */
@@ -82,18 +239,76 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/about",
-        "/listing/add-listing"
+        "/_authenticated",
+        "/_example",
+        "/about"
       ]
     },
     "/": {
       "filePath": "index.lazy.tsx"
     },
+    "/_authenticated": {
+      "filePath": "_authenticated.tsx",
+      "children": [
+        "/_authenticated/listing/$id",
+        "/_authenticated/listing/add-listing"
+      ]
+    },
+    "/_example": {
+      "filePath": "_example.tsx",
+      "children": [
+        "/_example/authenticate-01",
+        "/_example/authenticate-02",
+        "/_example/authenticate-03",
+        "/_example/dashboard-03",
+        "/_example/dashboard-04",
+        "/_example/dashboard-05",
+        "/_example/dashboard-06",
+        "/_example/example"
+      ]
+    },
     "/about": {
       "filePath": "about.tsx"
     },
-    "/listing/add-listing": {
-      "filePath": "listing/add-listing.jsx"
+    "/_example/authenticate-01": {
+      "filePath": "_example/authenticate-01.tsx",
+      "parent": "/_example"
+    },
+    "/_example/authenticate-02": {
+      "filePath": "_example/authenticate-02.tsx",
+      "parent": "/_example"
+    },
+    "/_example/authenticate-03": {
+      "filePath": "_example/authenticate-03.tsx",
+      "parent": "/_example"
+    },
+    "/_example/dashboard-03": {
+      "filePath": "_example/dashboard-03.tsx",
+      "parent": "/_example"
+    },
+    "/_example/dashboard-04": {
+      "filePath": "_example/dashboard-04.tsx",
+      "parent": "/_example"
+    },
+    "/_example/dashboard-05": {
+      "filePath": "_example/dashboard-05.tsx",
+      "parent": "/_example"
+    },
+    "/_example/dashboard-06": {
+      "filePath": "_example/dashboard-06.tsx",
+      "parent": "/_example"
+    },
+    "/_example/example": {
+      "filePath": "_example/example.tsx",
+      "parent": "/_example"
+    },
+    "/_authenticated/listing/$id": {
+      "filePath": "_authenticated/listing/$id.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/listing/add-listing": {
+      "filePath": "_authenticated/listing/add-listing.tsx",
+      "parent": "/_authenticated"
     }
   }
 }
