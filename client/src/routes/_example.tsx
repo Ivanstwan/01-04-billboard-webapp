@@ -13,7 +13,7 @@ const exampleLink = [
 const Component = () => {
   return (
     <>
-      <div className="flex sm:gap-4 sm:py-4 sm:pl-16">
+      <div className="flex overflow-auto sm:gap-4 sm:py-4 sm:pl-16">
         {exampleLink.map((item) => (
           <Link to={`/${item}`}>{item}</Link>
         ))}

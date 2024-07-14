@@ -14,8 +14,10 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as AboutImport } from './routes/about'
+import { Route as NotAuthenticatedImport } from './routes/_not-authenticated'
 import { Route as ExampleImport } from './routes/_example'
 import { Route as AuthenticatedImport } from './routes/_authenticated'
+import { Route as NotAuthenticatedLoginImport } from './routes/_not-authenticated/login'
 import { Route as ExampleExampleImport } from './routes/_example/example'
 import { Route as ExampleDashboard06Import } from './routes/_example/dashboard-06'
 import { Route as ExampleDashboard05Import } from './routes/_example/dashboard-05'
@@ -38,6 +40,11 @@ const AboutRoute = AboutImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const NotAuthenticatedRoute = NotAuthenticatedImport.update({
+  id: '/_not-authenticated',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const ExampleRoute = ExampleImport.update({
   id: '/_example',
   getParentRoute: () => rootRoute,
@@ -52,6 +59,11 @@ const IndexLazyRoute = IndexLazyImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+
+const NotAuthenticatedLoginRoute = NotAuthenticatedLoginImport.update({
+  path: '/login',
+  getParentRoute: () => NotAuthenticatedRoute,
+} as any)
 
 const ExampleExampleRoute = ExampleExampleImport.update({
   path: '/example',
@@ -129,6 +141,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExampleImport
       parentRoute: typeof rootRoute
     }
+    '/_not-authenticated': {
+      id: '/_not-authenticated'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof NotAuthenticatedImport
+      parentRoute: typeof rootRoute
+    }
     '/about': {
       id: '/about'
       path: '/about'
@@ -192,6 +211,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExampleExampleImport
       parentRoute: typeof ExampleImport
     }
+    '/_not-authenticated/login': {
+      id: '/_not-authenticated/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof NotAuthenticatedLoginImport
+      parentRoute: typeof NotAuthenticatedImport
+    }
     '/_authenticated/listing/$id': {
       id: '/_authenticated/listing/$id'
       path: '/listing/$id'
@@ -227,6 +253,9 @@ export const routeTree = rootRoute.addChildren({
     ExampleDashboard06Route,
     ExampleExampleRoute,
   }),
+  NotAuthenticatedRoute: NotAuthenticatedRoute.addChildren({
+    NotAuthenticatedLoginRoute,
+  }),
   AboutRoute,
 })
 
@@ -241,6 +270,7 @@ export const routeTree = rootRoute.addChildren({
         "/",
         "/_authenticated",
         "/_example",
+        "/_not-authenticated",
         "/about"
       ]
     },
@@ -265,6 +295,12 @@ export const routeTree = rootRoute.addChildren({
         "/_example/dashboard-05",
         "/_example/dashboard-06",
         "/_example/example"
+      ]
+    },
+    "/_not-authenticated": {
+      "filePath": "_not-authenticated.tsx",
+      "children": [
+        "/_not-authenticated/login"
       ]
     },
     "/about": {
@@ -301,6 +337,10 @@ export const routeTree = rootRoute.addChildren({
     "/_example/example": {
       "filePath": "_example/example.tsx",
       "parent": "/_example"
+    },
+    "/_not-authenticated/login": {
+      "filePath": "_not-authenticated/login.tsx",
+      "parent": "/_not-authenticated"
     },
     "/_authenticated/listing/$id": {
       "filePath": "_authenticated/listing/$id.tsx",
