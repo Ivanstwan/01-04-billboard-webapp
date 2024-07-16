@@ -70,7 +70,6 @@ function ExternalStateMap({
         />
         {listing.length > 0 &&
           listing.map((item) => {
-            console.log(item, '[item]');
             return (
               <Marker
                 position={[item.latitude, item.longitude]}

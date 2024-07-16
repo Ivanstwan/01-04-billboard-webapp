@@ -29,11 +29,8 @@ export const Route = createFileRoute('/listing')({
 });
 
 function PublicListing() {
-  console.log(Route, '[Route]');
-
   const navigate = useNavigate();
   const { filters, resetFilters, setFilters } = useFilters(Route.fullPath);
-  console.log({ filters, resetFilters, setFilters }, '[test filter]');
 
   const getMapData = (map: Map) => {
     // center
@@ -53,27 +50,6 @@ function PublicListing() {
 
     navigate({
       search: (prev) => {
-        console.log(
-          {
-            ...prev,
-            lat,
-            long,
-            mapBounds: { north, east, south, west },
-            zoom: mapZoom,
-          },
-          '[test]',
-        );
-        console.log(
-          JSON.stringify({
-            ...prev,
-            lat,
-            long,
-            mapBounds: { north, east, south, west },
-            zoom: mapZoom,
-          }),
-          '[test]',
-        );
-
         return {
           ...prev,
           lat,
