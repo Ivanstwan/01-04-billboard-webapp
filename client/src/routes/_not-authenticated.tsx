@@ -6,7 +6,7 @@ const Component = () => {
 
 export const Route = createFileRoute('/_not-authenticated')({
   beforeLoad: async ({ context }) => {
-    console.log(context, '[context]');
+    console.log(context, '[context] not auth');
   },
   component: Component,
 });

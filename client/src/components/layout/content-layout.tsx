@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Navbar from '../custom-ui/navbar';
 
 type ContentLayoutProps = {
   children: React.ReactNode;
@@ -14,6 +15,7 @@ export const ContentLayout = ({
 }: ContentLayoutProps) => {
   return (
     <>
+      <Navbar />
       <div className="flex min-h-svh flex-col py-6">
         {showTitle && (
           <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-8">

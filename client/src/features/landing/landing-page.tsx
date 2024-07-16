@@ -31,134 +31,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-
-const navigationLeft = [
-  { name: 'Dashboard', to: '/' },
-  { name: 'Example', to: '/example' },
-  { name: 'Rent', to: '/listing' },
-];
-
-const navigationRight = [
-  { name: 'Advertise', to: '/' },
-  { name: 'Manage', to: '/' },
-  { name: 'Rent', to: '/listing' },
-];
-
-const Navbar = () => {
-  return (
-    <header className="sticky top-0 z-30 gap-4 border-b bg-background px-4 md:px-6">
-      <div className="flex h-16 items-center md:container">
-        <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
-          <Link
-            href="#"
-            className="flex items-center gap-2 text-lg font-semibold md:text-base"
-          >
-            <Package2 className="h-6 w-6" />
-            <span className="sr-only">Acme Inc</span>
-          </Link>
-          {navigationLeft.map((item) => (
-            <Link
-              key={item.name}
-              to={item.to}
-              className="text-muted-foreground transition-colors hover:text-foreground"
-            >
-              {item.name}
-            </Link>
-          ))}
-        </nav>
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button
-              variant="outline"
-              size="icon"
-              className="shrink-0 md:hidden"
-            >
-              <Menu className="h-5 w-5" />
-              <span className="sr-only">Toggle navigation menu</span>
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="left">
-            <nav className="grid gap-6 text-lg font-medium">
-              <Link
-                href="#"
-                className="flex items-center gap-2 text-lg font-semibold"
-              >
-                <Package2 className="h-6 w-6" />
-                <span className="sr-only">Acme Inc</span>
-              </Link>
-              {navigationLeft.map((item) => (
-                <Link
-                  key={item.name}
-                  to={item.to}
-                  className="text-muted-foreground transition-colors hover:text-foreground"
-                >
-                  {item.name}
-                </Link>
-              ))}
-              {navigationRight.map((item) => (
-                <Link
-                  key={item.name}
-                  to={item.to}
-                  className="text-muted-foreground transition-colors hover:text-foreground"
-                >
-                  {item.name}
-                </Link>
-              ))}
-            </nav>
-          </SheetContent>
-        </Sheet>
-        <div className="ml-auto flex">
-          <Link
-            href="#"
-            className="flex items-center gap-2 text-lg font-semibold md:text-base"
-          >
-            <Package2 className="h-6 w-6" />
-            <span className="sr-only">Acme Inc</span>
-          </Link>
-        </div>
-        <div className="flex items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
-          <nav className="ml-auto hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
-            {navigationRight.map((item) => (
-              <Link
-                key={item.name}
-                to={item.to}
-                className="text-muted-foreground transition-colors hover:text-foreground"
-              >
-                {item.name}
-              </Link>
-            ))}
-            <Link
-              to="/login"
-              className="text-muted-foreground transition-colors hover:text-foreground"
-            >
-              Sign In
-            </Link>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="secondary"
-                  size="icon"
-                  className="rounded-full"
-                >
-                  <CircleUser className="h-5 w-5" />
-                  <span className="sr-only">Toggle user menu</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Settings</DropdownMenuItem>
-                <DropdownMenuItem>Support</DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Logout</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </nav>
-        </div>
-      </div>
-    </header>
-  );
-};
+import Navbar from '@/components/custom-ui/navbar';
 
 const HeroSection = () => {
   return (
@@ -362,8 +235,8 @@ const Footer = () => {
                 y2="12.9901"
                 gradientUnits="userSpaceOnUse"
               >
-                <stop stop-color="#1724C9" />
-                <stop offset="1" stop-color="#1C64F2" />
+                <stop stopColor="#1724C9" />
+                <stop offset="1" stopColor="#1C64F2" />
               </linearGradient>
               <linearGradient
                 id="paint1_linear_11430_22515"
@@ -373,8 +246,8 @@ const Footer = () => {
                 y2="2.33321"
                 gradientUnits="userSpaceOnUse"
               >
-                <stop stop-color="#1C64F2" />
-                <stop offset="1" stop-color="#0092FF" />
+                <stop stopColor="#1C64F2" />
+                <stop offset="1" stopColor="#0092FF" />
               </linearGradient>
               <linearGradient
                 id="paint2_linear_11430_22515"
@@ -384,8 +257,8 @@ const Footer = () => {
                 y2="5.99375"
                 gradientUnits="userSpaceOnUse"
               >
-                <stop stop-color="#0092FF" />
-                <stop offset="1" stop-color="#45B2FF" />
+                <stop stopColor="#0092FF" />
+                <stop offset="1" stopColor="#45B2FF" />
               </linearGradient>
               <linearGradient
                 id="paint3_linear_11430_22515"
@@ -395,8 +268,8 @@ const Footer = () => {
                 y2="25.8192"
                 gradientUnits="userSpaceOnUse"
               >
-                <stop stop-color="#1C64F2" />
-                <stop offset="1" stop-color="#0092FF" />
+                <stop stopColor="#1C64F2" />
+                <stop offset="1" stopColor="#0092FF" />
               </linearGradient>
               <linearGradient
                 id="paint4_linear_11430_22515"
@@ -406,8 +279,8 @@ const Footer = () => {
                 y2="24.1181"
                 gradientUnits="userSpaceOnUse"
               >
-                <stop stop-color="#1724C9" />
-                <stop offset="1" stop-color="#1C64F2" />
+                <stop stopColor="#1724C9" />
+                <stop offset="1" stopColor="#1C64F2" />
               </linearGradient>
               <linearGradient
                 id="paint5_linear_11430_22515"
@@ -417,8 +290,8 @@ const Footer = () => {
                 y2="10.6178"
                 gradientUnits="userSpaceOnUse"
               >
-                <stop stop-color="#0092FF" />
-                <stop offset="1" stop-color="#45B2FF" />
+                <stop stopColor="#0092FF" />
+                <stop offset="1" stopColor="#45B2FF" />
               </linearGradient>
               <linearGradient
                 id="paint6_linear_11430_22515"
@@ -428,8 +301,8 @@ const Footer = () => {
                 y2="20.4898"
                 gradientUnits="userSpaceOnUse"
               >
-                <stop stop-color="#1C64F2" />
-                <stop offset="1" stop-color="#0092FF" />
+                <stop stopColor="#1C64F2" />
+                <stop offset="1" stopColor="#0092FF" />
               </linearGradient>
               <linearGradient
                 id="paint7_linear_11430_22515"
@@ -439,8 +312,8 @@ const Footer = () => {
                 y2="11.488"
                 gradientUnits="userSpaceOnUse"
               >
-                <stop stop-color="#1724C9" />
-                <stop offset="1" stop-color="#1C64F2" />
+                <stop stopColor="#1724C9" />
+                <stop offset="1" stopColor="#1C64F2" />
               </linearGradient>
               <linearGradient
                 id="paint8_linear_11430_22515"
@@ -450,8 +323,8 @@ const Footer = () => {
                 y2="31.9579"
                 gradientUnits="userSpaceOnUse"
               >
-                <stop stop-color="#0092FF" />
-                <stop offset="1" stop-color="#45B2FF" />
+                <stop stopColor="#0092FF" />
+                <stop offset="1" stopColor="#45B2FF" />
               </linearGradient>
             </defs>
           </svg>

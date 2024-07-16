@@ -13,6 +13,7 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as ListingImport } from './routes/listing'
 import { Route as AboutImport } from './routes/about'
 import { Route as NotAuthenticatedImport } from './routes/_not-authenticated'
 import { Route as ExampleImport } from './routes/_example'
@@ -27,13 +28,17 @@ import { Route as ExampleAuthenticate03Import } from './routes/_example/authenti
 import { Route as ExampleAuthenticate02Import } from './routes/_example/authenticate-02'
 import { Route as ExampleAuthenticate01Import } from './routes/_example/authenticate-01'
 import { Route as AuthenticatedListingAddListingImport } from './routes/_authenticated/listing/add-listing'
-import { Route as AuthenticatedListingIdImport } from './routes/_authenticated/listing/$id'
 
 // Create Virtual Routes
 
 const IndexLazyImport = createFileRoute('/')()
 
 // Create/Update Routes
+
+const ListingRoute = ListingImport.update({
+  path: '/listing',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const AboutRoute = AboutImport.update({
   path: '/about',
@@ -111,11 +116,6 @@ const AuthenticatedListingAddListingRoute =
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 
-const AuthenticatedListingIdRoute = AuthenticatedListingIdImport.update({
-  path: '/listing/$id',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
-
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -153,6 +153,13 @@ declare module '@tanstack/react-router' {
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AboutImport
+      parentRoute: typeof rootRoute
+    }
+    '/listing': {
+      id: '/listing'
+      path: '/listing'
+      fullPath: '/listing'
+      preLoaderRoute: typeof ListingImport
       parentRoute: typeof rootRoute
     }
     '/_example/authenticate-01': {
@@ -218,13 +225,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NotAuthenticatedLoginImport
       parentRoute: typeof NotAuthenticatedImport
     }
-    '/_authenticated/listing/$id': {
-      id: '/_authenticated/listing/$id'
-      path: '/listing/$id'
-      fullPath: '/listing/$id'
-      preLoaderRoute: typeof AuthenticatedListingIdImport
-      parentRoute: typeof AuthenticatedImport
-    }
     '/_authenticated/listing/add-listing': {
       id: '/_authenticated/listing/add-listing'
       path: '/listing/add-listing'
@@ -240,7 +240,6 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren({
   IndexLazyRoute,
   AuthenticatedRoute: AuthenticatedRoute.addChildren({
-    AuthenticatedListingIdRoute,
     AuthenticatedListingAddListingRoute,
   }),
   ExampleRoute: ExampleRoute.addChildren({
@@ -257,6 +256,7 @@ export const routeTree = rootRoute.addChildren({
     NotAuthenticatedLoginRoute,
   }),
   AboutRoute,
+  ListingRoute,
 })
 
 /* prettier-ignore-end */
@@ -271,7 +271,8 @@ export const routeTree = rootRoute.addChildren({
         "/_authenticated",
         "/_example",
         "/_not-authenticated",
-        "/about"
+        "/about",
+        "/listing"
       ]
     },
     "/": {
@@ -280,7 +281,6 @@ export const routeTree = rootRoute.addChildren({
     "/_authenticated": {
       "filePath": "_authenticated.tsx",
       "children": [
-        "/_authenticated/listing/$id",
         "/_authenticated/listing/add-listing"
       ]
     },
@@ -305,6 +305,9 @@ export const routeTree = rootRoute.addChildren({
     },
     "/about": {
       "filePath": "about.tsx"
+    },
+    "/listing": {
+      "filePath": "listing.tsx"
     },
     "/_example/authenticate-01": {
       "filePath": "_example/authenticate-01.tsx",
@@ -341,10 +344,6 @@ export const routeTree = rootRoute.addChildren({
     "/_not-authenticated/login": {
       "filePath": "_not-authenticated/login.tsx",
       "parent": "/_not-authenticated"
-    },
-    "/_authenticated/listing/$id": {
-      "filePath": "_authenticated/listing/$id.tsx",
-      "parent": "/_authenticated"
     },
     "/_authenticated/listing/add-listing": {
       "filePath": "_authenticated/listing/add-listing.tsx",

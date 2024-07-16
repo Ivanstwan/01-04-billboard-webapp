@@ -32,11 +32,11 @@ if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
     <StrictMode>
-      <AppProvider>
+      <QueryClientProvider client={queryClient}>
         {/* <QueryClientProvider client={queryClient}> */}
         <RouterProvider router={router} />
         {/* </QueryClientProvider> */}
-      </AppProvider>
+      </QueryClientProvider>
     </StrictMode>,
   );
 }
