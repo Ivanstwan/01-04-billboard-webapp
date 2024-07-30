@@ -9,6 +9,7 @@ if (process.env.NODE_ENV !== 'development') {
     transports.push(
         new winston.transports.Console({
             format: winston.format.combine(
+                winston.format.timestamp(),
                 winston.format.cli(),
                 winston.format.splat()
             ),
@@ -31,8 +32,9 @@ if (process.env.NODE_ENV !== 'development') {
 const LoggerInstance = expressWinston.logger({
     transports: [new winston.transports.Console()],
     format: winston.format.combine(
-        winston.format.colorize(),
-        winston.format.json()
+        winston.format.timestamp(),
+        winston.format.json(),
+        winston.format.colorize()
     ),
     // meta: true, // optional: control whether you want to log the meta data about the request (default to true)
     // msg: 'HTTP {{req.method}} {{req.url}}', // optional: customize the default logging message. E.g. "{{res.statusCode}} {{req.method}} {{res.responseTime}}ms {{req.url}}"

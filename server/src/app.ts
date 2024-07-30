@@ -12,8 +12,7 @@ async function startServer() {
     const app = express();
 
     app.get('/status', (req, res) => {
-        res.status(200).json({ user: 'test' });
-        // logger.info('info', { isAuth: true });
+        res.status(200).json({ on: true });
     });
 
     // security config, for protection against some CSRF, XSS, and clickjacking
