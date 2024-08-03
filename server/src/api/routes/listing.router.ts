@@ -9,7 +9,7 @@ import { MapBoundSchema } from '../schema/listing.schema';
 const router = Router();
 
 router.post(
-    '/register',
+    '/',
     middlewares.validateData(MapBoundSchema),
     async (req: Request, res: Response) => {
         res.status(StatusCodes.OK).json({
