@@ -1,13 +1,13 @@
 import { createFileRoute } from '@tanstack/react-router';
 
-import LoginForm from '@/features/auth/components/login-form';
 import { EmptyLayout } from '@/components/layout/empty-layout';
+import RegisterForm from '@/features/auth/components/register-form';
 
-export const Route = createFileRoute('/_not-authenticated/login')({
+export const Route = createFileRoute('/_not-authenticated/register')({
   component: () => (
     <EmptyLayout title="login" showTitle={false}>
       <div className="flex min-h-svh flex-col items-center justify-center p-6">
-        <LoginForm />
+        <RegisterForm />
       </div>
     </EmptyLayout>
   ),

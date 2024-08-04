@@ -11,7 +11,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
-export const LoginForm = () => {
+const LoginForm = () => {
   return (
     <Card className="mx-auto max-w-sm">
       <CardHeader>
@@ -60,3 +60,5 @@ export const LoginForm = () => {
     </Card>
   );
 };
+
+export default LoginForm;

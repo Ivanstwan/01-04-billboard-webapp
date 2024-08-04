@@ -21,6 +21,8 @@ const navigationRight = [
   { name: 'Advertise', to: '/' },
   { name: 'Manage', to: '/' },
   { name: 'Rent', to: '/listing' },
+  { name: 'Sign in', to: '/login' },
+  { name: 'Register', to: '/register' },
 ];
 
 const Navbar = () => {
@@ -106,12 +108,6 @@ const Navbar = () => {
                 {item.name}
               </Link>
             ))}
-            <Link
-              to="/login"
-              className="text-muted-foreground transition-colors hover:text-foreground"
-            >
-              Sign In
-            </Link>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button

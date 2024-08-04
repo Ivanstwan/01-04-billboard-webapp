@@ -18,6 +18,7 @@ import { Route as AboutImport } from './routes/about'
 import { Route as NotAuthenticatedImport } from './routes/_not-authenticated'
 import { Route as ExampleImport } from './routes/_example'
 import { Route as AuthenticatedImport } from './routes/_authenticated'
+import { Route as NotAuthenticatedRegisterImport } from './routes/_not-authenticated/register'
 import { Route as NotAuthenticatedLoginImport } from './routes/_not-authenticated/login'
 import { Route as ExampleExampleImport } from './routes/_example/example'
 import { Route as ExampleDashboard06Import } from './routes/_example/dashboard-06'
@@ -64,6 +65,11 @@ const IndexLazyRoute = IndexLazyImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+
+const NotAuthenticatedRegisterRoute = NotAuthenticatedRegisterImport.update({
+  path: '/register',
+  getParentRoute: () => NotAuthenticatedRoute,
+} as any)
 
 const NotAuthenticatedLoginRoute = NotAuthenticatedLoginImport.update({
   path: '/login',
@@ -225,6 +231,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NotAuthenticatedLoginImport
       parentRoute: typeof NotAuthenticatedImport
     }
+    '/_not-authenticated/register': {
+      id: '/_not-authenticated/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof NotAuthenticatedRegisterImport
+      parentRoute: typeof NotAuthenticatedImport
+    }
     '/_authenticated/listing/add-listing': {
       id: '/_authenticated/listing/add-listing'
       path: '/listing/add-listing'
@@ -254,6 +267,7 @@ export const routeTree = rootRoute.addChildren({
   }),
   NotAuthenticatedRoute: NotAuthenticatedRoute.addChildren({
     NotAuthenticatedLoginRoute,
+    NotAuthenticatedRegisterRoute,
   }),
   AboutRoute,
   ListingRoute,
@@ -300,7 +314,8 @@ export const routeTree = rootRoute.addChildren({
     "/_not-authenticated": {
       "filePath": "_not-authenticated.tsx",
       "children": [
-        "/_not-authenticated/login"
+        "/_not-authenticated/login",
+        "/_not-authenticated/register"
       ]
     },
     "/about": {
@@ -343,6 +358,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_not-authenticated/login": {
       "filePath": "_not-authenticated/login.tsx",
+      "parent": "/_not-authenticated"
+    },
+    "/_not-authenticated/register": {
+      "filePath": "_not-authenticated/register.tsx",
       "parent": "/_not-authenticated"
     },
     "/_authenticated/listing/add-listing": {
