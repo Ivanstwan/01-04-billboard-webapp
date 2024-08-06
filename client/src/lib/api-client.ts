@@ -9,6 +9,10 @@ function authRequestInterceptor(config: InternalAxiosRequestConfig) {
   return config;
 }
 
-export const api = Axios.create({
+const api = Axios.create({
   baseURL: 'http://localhost:3000',
 });
+
+api.interceptors.request.use(authRequestInterceptor);
+
+export default api;

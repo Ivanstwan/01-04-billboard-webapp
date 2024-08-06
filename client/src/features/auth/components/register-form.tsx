@@ -11,10 +11,11 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { z } from 'zod';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { toast } from 'sonner';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { registerUser } from '../api/register-form';
+import { AxiosErrorResponse } from '@/types/api';
 
 // Define the schema
 const RegisterSchema = z.object({
@@ -24,7 +25,6 @@ const RegisterSchema = z.object({
 const RegisterForm = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
-  const [errors, setErrors] = useState({});
 
   const mutation = useMutation({
     mutationFn: (email: string) => registerUser(email),
@@ -32,7 +32,7 @@ const RegisterForm = () => {
       toast.success(data?.message || 'Check your email');
       navigate({ to: '/login' });
     },
-    onError: (error, variables, context) => {
+    onError: (error: AxiosErrorResponse, variables, context) => {
       toast.error(error?.response?.data?.message || 'Failed to register');
     },
   });
@@ -46,7 +46,7 @@ const RegisterForm = () => {
       const issues: Record<string, any> = validation?.error?.issues || [];
 
       for (let i = 0; i < issues.length; i++) {
-        toast.warning(issues[0].message);
+        toast.warning(issues[i].message);
       }
     } else {
       mutation.mutate(email);
@@ -58,7 +58,7 @@ const RegisterForm = () => {
       <CardHeader>
         <CardTitle className="text-2xl">Register</CardTitle>
         <CardDescription>
-          Enter your email below to login to your account
+          Enter your email below to register an account
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -86,10 +86,10 @@ const RegisterForm = () => {
           </Button>
         </div>
         <div className="mt-4 text-center text-sm">
-          Don&apos;t have an account?{' '}
-          {/* <Link to="/register" className="underline">
-            Sign up
-          </Link> */}
+          Already have an account?{' '}
+          <Link to="/login" className="underline">
+            Sign in
+          </Link>
         </div>
       </CardContent>
     </Card>

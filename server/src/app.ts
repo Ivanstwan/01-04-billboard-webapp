@@ -18,7 +18,12 @@ async function startServer() {
   // security config, for protection against some CSRF, XSS, and clickjacking
   app.use(helmet());
 
-  app.use(cors());
+  app.use(
+    cors({
+      origin: 'http://localhost:3000', // Replace with your frontend URL
+      credentials: true, // Allow credentials (cookies) to be sent
+    }),
+  );
 
   // parse cookie
   app.use(cookieParser());
