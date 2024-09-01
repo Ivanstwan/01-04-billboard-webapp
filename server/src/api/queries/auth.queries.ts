@@ -9,13 +9,10 @@ export function checkEmailExist(email) {
 }
 
 export function createUser(email, password) {
-  console.log({ email, password }, '[call query]');
-
   const query = {
     text: 'INSERT INTO "users" (email, pwd) VALUES ($1, $2)',
     values: [email, password],
   };
-  console.log(query, '[query]');
 
   return pool.query(query);
 }
