@@ -25,10 +25,8 @@ router.post('/register', middlewares.validateData(RegisterSchema), async (req: R
         email: email,
       };
       const token = jwt.sign(payload, config.jwtSecret, {
-        expiresIn: '5m',
+        expiresIn: '30m',
       });
-
-      console.log(token, '[token]');
 
       // logic for sending email to user
       sendLinkToEmail(email, `http://localhost:3000/register/create?token=${token}`);
@@ -60,8 +58,21 @@ router.post(
     const { token, password } = req.body;
 
     try {
-      const payload = jwt.verify(token, config.jwtSecret) as CustomJwtEmail;
-      const userEmail = payload.email;
+      let jwtDecoded;
+
+      jwt.verify(token, config.jwtSecret, (err, decoded: CustomJwtEmail) => {
+        if (err) {
+          res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            error: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR),
+            message: 'Fail to create account, token expired',
+          });
+          throw Error;
+        } else {
+          jwtDecoded = decoded;
+        }
+      });
+
+      const userEmail = jwtDecoded.email;
 
       const hashPwd = await hashPassword(password);
       const result = await createUser(userEmail, hashPwd);
@@ -77,10 +88,12 @@ router.post(
         message: 'Fail to create account',
       });
     } catch (error) {
-      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        error: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR),
-        message: 'Fail to create account',
-      });
+      if (!res.headersSent) {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+          error: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR),
+          message: 'Fail to create account',
+        });
+      }
     }
   },
 );
