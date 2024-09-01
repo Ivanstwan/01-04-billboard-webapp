@@ -18,7 +18,6 @@ import { Route as AboutImport } from './routes/about'
 import { Route as NotAuthenticatedImport } from './routes/_not-authenticated'
 import { Route as ExampleImport } from './routes/_example'
 import { Route as AuthenticatedImport } from './routes/_authenticated'
-import { Route as NotAuthenticatedRegisterImport } from './routes/_not-authenticated/register'
 import { Route as NotAuthenticatedLoginImport } from './routes/_not-authenticated/login'
 import { Route as ExampleExampleImport } from './routes/_example/example'
 import { Route as ExampleDashboard06Import } from './routes/_example/dashboard-06'
@@ -28,6 +27,8 @@ import { Route as ExampleDashboard03Import } from './routes/_example/dashboard-0
 import { Route as ExampleAuthenticate03Import } from './routes/_example/authenticate-03'
 import { Route as ExampleAuthenticate02Import } from './routes/_example/authenticate-02'
 import { Route as ExampleAuthenticate01Import } from './routes/_example/authenticate-01'
+import { Route as NotAuthenticatedRegisterIndexImport } from './routes/_not-authenticated/register/index'
+import { Route as NotAuthenticatedRegisterCreateImport } from './routes/_not-authenticated/register/create'
 import { Route as AuthenticatedListingAddListingImport } from './routes/_authenticated/listing/add-listing'
 
 // Create Virtual Routes
@@ -65,11 +66,6 @@ const IndexLazyRoute = IndexLazyImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
-
-const NotAuthenticatedRegisterRoute = NotAuthenticatedRegisterImport.update({
-  path: '/register',
-  getParentRoute: () => NotAuthenticatedRoute,
-} as any)
 
 const NotAuthenticatedLoginRoute = NotAuthenticatedLoginImport.update({
   path: '/login',
@@ -115,6 +111,18 @@ const ExampleAuthenticate01Route = ExampleAuthenticate01Import.update({
   path: '/authenticate-01',
   getParentRoute: () => ExampleRoute,
 } as any)
+
+const NotAuthenticatedRegisterIndexRoute =
+  NotAuthenticatedRegisterIndexImport.update({
+    path: '/register/',
+    getParentRoute: () => NotAuthenticatedRoute,
+  } as any)
+
+const NotAuthenticatedRegisterCreateRoute =
+  NotAuthenticatedRegisterCreateImport.update({
+    path: '/register/create',
+    getParentRoute: () => NotAuthenticatedRoute,
+  } as any)
 
 const AuthenticatedListingAddListingRoute =
   AuthenticatedListingAddListingImport.update({
@@ -231,19 +239,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NotAuthenticatedLoginImport
       parentRoute: typeof NotAuthenticatedImport
     }
-    '/_not-authenticated/register': {
-      id: '/_not-authenticated/register'
-      path: '/register'
-      fullPath: '/register'
-      preLoaderRoute: typeof NotAuthenticatedRegisterImport
-      parentRoute: typeof NotAuthenticatedImport
-    }
     '/_authenticated/listing/add-listing': {
       id: '/_authenticated/listing/add-listing'
       path: '/listing/add-listing'
       fullPath: '/listing/add-listing'
       preLoaderRoute: typeof AuthenticatedListingAddListingImport
       parentRoute: typeof AuthenticatedImport
+    }
+    '/_not-authenticated/register/create': {
+      id: '/_not-authenticated/register/create'
+      path: '/register/create'
+      fullPath: '/register/create'
+      preLoaderRoute: typeof NotAuthenticatedRegisterCreateImport
+      parentRoute: typeof NotAuthenticatedImport
+    }
+    '/_not-authenticated/register/': {
+      id: '/_not-authenticated/register/'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof NotAuthenticatedRegisterIndexImport
+      parentRoute: typeof NotAuthenticatedImport
     }
   }
 }
@@ -267,7 +282,8 @@ export const routeTree = rootRoute.addChildren({
   }),
   NotAuthenticatedRoute: NotAuthenticatedRoute.addChildren({
     NotAuthenticatedLoginRoute,
-    NotAuthenticatedRegisterRoute,
+    NotAuthenticatedRegisterCreateRoute,
+    NotAuthenticatedRegisterIndexRoute,
   }),
   AboutRoute,
   ListingRoute,
@@ -315,7 +331,8 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_not-authenticated.tsx",
       "children": [
         "/_not-authenticated/login",
-        "/_not-authenticated/register"
+        "/_not-authenticated/register/create",
+        "/_not-authenticated/register/"
       ]
     },
     "/about": {
@@ -360,13 +377,17 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_not-authenticated/login.tsx",
       "parent": "/_not-authenticated"
     },
-    "/_not-authenticated/register": {
-      "filePath": "_not-authenticated/register.tsx",
-      "parent": "/_not-authenticated"
-    },
     "/_authenticated/listing/add-listing": {
       "filePath": "_authenticated/listing/add-listing.tsx",
       "parent": "/_authenticated"
+    },
+    "/_not-authenticated/register/create": {
+      "filePath": "_not-authenticated/register/create.tsx",
+      "parent": "/_not-authenticated"
+    },
+    "/_not-authenticated/register/": {
+      "filePath": "_not-authenticated/register/index.tsx",
+      "parent": "/_not-authenticated"
     }
   }
 }
