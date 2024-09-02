@@ -10,6 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { useAuth } from '@/auth';
 
 const navigationLeft = [
   { name: 'Dashboard', to: '/' },
@@ -20,12 +21,15 @@ const navigationLeft = [
 const navigationRight = [
   { name: 'Advertise', to: '/' },
   { name: 'Manage', to: '/' },
+  { name: 'Add Listing', to: '/listing/add-listing' },
   { name: 'Rent', to: '/listing' },
   { name: 'Sign in', to: '/login' },
   { name: 'Register', to: '/register' },
 ];
 
 const Navbar = () => {
+  const auth = useAuth();
+
   return (
     <header className="sticky top-0 z-30 gap-4 border-b bg-background px-4 md:px-6">
       <div className="flex h-16 items-center md:container">
@@ -125,9 +129,12 @@ const Navbar = () => {
                 <DropdownMenuItem>Settings</DropdownMenuItem>
                 <DropdownMenuItem>Support</DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Logout</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => auth.logout()}>
+                  Logout
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+            <span>{auth?.user?.email || ''}</span>
           </nav>
         </div>
       </div>

@@ -18,7 +18,7 @@ const router = createRouter({
   routeTree,
   context: {
     queryClient,
-    auth: undefined, // This will be set after we wrap the app in an AuthProvider
+    auth: null, // This will be set after we wrap the app in an AuthProvider
   },
   defaultNotFoundComponent: () => <div>Global not found!</div>,
 });

@@ -16,6 +16,7 @@ import { toast } from 'sonner';
 import { useMutation } from '@tanstack/react-query';
 import { loginUser } from '../api/login-form';
 import { AxiosErrorResponse } from '@/types/api';
+import { useAuth } from '@/auth';
 
 // Define the schema
 const LoginSchema = z.object({
@@ -29,6 +30,7 @@ const LoginSchema = z.object({
 export type Login = z.infer<typeof LoginSchema>;
 
 const LoginForm = () => {
+  const auth = useAuth();
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -37,6 +39,8 @@ const LoginForm = () => {
     mutationFn: (data: Login) => loginUser(data),
     onSuccess: (data) => {
       toast.success(data?.message || 'Login successful');
+
+      auth.login(data.accessToken || '');
       navigate({ to: '/' });
     },
     onError: (error: AxiosErrorResponse, variables, context) => {
