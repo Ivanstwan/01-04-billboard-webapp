@@ -8,7 +8,7 @@ import { getReasonPhrase, StatusCodes } from 'http-status-codes';
 import { Logger } from 'winston';
 
 import middlewares from '../middlewares';
-import { checkEmailExist, createUser } from '../queries/auth.queries';
+import { checkEmailExist, createUser, getUserData } from '../queries/auth.queries';
 import { CreateUserSchema, LoginSchema, RegisterSchema } from '../schema/auth.schema';
 import { hashPassword } from '@/utils/utils-password';
 import { generateAccessToken, generateRefreshToken } from '@/utils/utils-token';
@@ -157,6 +157,53 @@ router.post('/login', middlewares.validateData(LoginSchema), async (req: Request
     });
   }
   res.status(200).json({ route: 'auth' });
+});
+
+type RefreshToken = {
+  id: number;
+  exp: number;
+  iat: number;
+};
+
+router.get('/refreshtoken', async (req: Request, res: Response) => {
+  try {
+    const refreshToken = req.cookies?.refresh_token;
+
+    if (!refreshToken)
+      return res.status(StatusCodes.UNAUTHORIZED).json({
+        error: 'Invalid refresh token',
+      });
+
+    const jwtVerify = jwt.verify(refreshToken, config.jwtSecret) as RefreshToken;
+
+    const { id } = jwtVerify;
+
+    const result = await getUserData(id);
+
+    if (result.rows.length === 1) {
+      const { id, username, email, img } = result.rows[0];
+
+      const accessToken = await generateAccessToken({
+        email: email,
+        id: id,
+        username: username,
+        image: img,
+      });
+
+      return res.status(StatusCodes.OK).json({
+        message: 'Access extended',
+        accessToken,
+      });
+    }
+
+    return res.status(StatusCodes.UNAUTHORIZED).json({
+      error: 'No user data',
+    });
+  } catch (error) {
+    return res.status(StatusCodes.UNAUTHORIZED).json({
+      error: 'Invalid refresh token / Internal server error',
+    });
+  }
 });
 
 router.get('/', (req: Request, res: Response) => {
