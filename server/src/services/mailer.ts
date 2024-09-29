@@ -1,16 +1,13 @@
-import dotenv from 'dotenv';
+import config from '@/config';
 import nodemailer from 'nodemailer';
-import { z } from 'zod';
-
-dotenv.config();
 
 // Function to send a password reset email using nodemailer
 function sendLinkToEmail(email: string, resetLink: string) {
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'id.samael1@gmail.com',
-      pass: process.env.EMAIL_PASS,
+      user: config.emails.user,
+      pass: config.emails.pass,
     },
   });
 

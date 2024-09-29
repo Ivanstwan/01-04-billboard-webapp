@@ -56,12 +56,10 @@ export default {
   api: {
     prefix: '/api',
   },
-  /**
-   * Mailgun email credentials
-   */
+
+  // mailer
   emails: {
-    apiKey: process.env.MAILGUN_API_KEY,
-    apiUsername: process.env.MAILGUN_USERNAME,
-    domain: process.env.MAILGUN_DOMAIN,
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
   },
 };

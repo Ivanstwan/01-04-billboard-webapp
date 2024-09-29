@@ -12,6 +12,8 @@ import { checkEmailExist, createUser, getUserData } from '../queries/auth.querie
 import { CreateUserSchema, LoginSchema, RegisterSchema } from '../schema/auth.schema';
 import { hashPassword } from '@/utils/utils-password';
 import { generateAccessToken, generateRefreshToken } from '@/utils/utils-token';
+import redisClient from '@/services/redisClient';
+import checkRefreshTokenInRedis from '../middlewares/checkRefreshTokenRedis';
 
 const router = Router();
 
@@ -135,6 +137,11 @@ router.post('/login', middlewares.validateData(LoginSchema), async (req: Request
           maxAge: 24 * 60 * 60 * 1000,
         });
 
+        // set refreshtoken in redis
+        await redisClient.set(String(userId), refreshToken, {
+          EX: 24 * 60 * 60, // 24 hours
+        });
+
         return res.status(StatusCodes.OK).json({
           message: 'Login successful',
           accessToken,
@@ -165,20 +172,11 @@ type RefreshToken = {
   iat: number;
 };
 
-router.get('/refreshtoken', async (req: Request, res: Response) => {
+router.get('/refreshtoken', checkRefreshTokenInRedis, async (req: Request, res: Response) => {
   try {
-    const refreshToken = req.cookies?.refresh_token;
+    const userId = req.body.userId; // Retrieved from the middleware
 
-    if (!refreshToken)
-      return res.status(StatusCodes.UNAUTHORIZED).json({
-        error: 'Invalid refresh token',
-      });
-
-    const jwtVerify = jwt.verify(refreshToken, config.jwtSecret) as RefreshToken;
-
-    const { id } = jwtVerify;
-
-    const result = await getUserData(id);
+    const result = await getUserData(userId);
 
     if (result.rows.length === 1) {
       const { id, username, email, img } = result.rows[0];

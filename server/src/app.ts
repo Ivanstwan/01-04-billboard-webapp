@@ -6,7 +6,6 @@ import cookieParser from 'cookie-parser';
 import config from './config';
 import routers from './api';
 import LoggerInstance from './loaders/logger';
-import { logger } from 'express-winston';
 
 async function startServer() {
   const app = express();
