@@ -13,7 +13,7 @@ import { CreateUserSchema, LoginSchema, RegisterSchema } from '../schema/auth.sc
 import { hashPassword } from '@/utils/utils-password';
 import { generateAccessToken, generateRefreshToken } from '@/utils/utils-token';
 import redisClient from '@/services/redisClient';
-import checkRefreshTokenInRedis from '../middlewares/checkRefreshTokenRedis';
+import { AuthRequest } from '../middlewares/checkAccessToken';
 
 const router = Router();
 
@@ -163,16 +163,10 @@ router.post('/login', middlewares.validateData(LoginSchema), async (req: Request
       message: 'Login failed',
     });
   }
-  res.status(200).json({ route: 'auth' });
+  // res.status(200).json({ route: 'auth' });
 });
 
-type RefreshToken = {
-  id: number;
-  exp: number;
-  iat: number;
-};
-
-router.get('/refreshtoken', checkRefreshTokenInRedis, async (req: Request, res: Response) => {
+router.get('/refreshtoken', middlewares.checkRefreshTokenInRedis, async (req: Request, res: Response) => {
   try {
     const userId = req.body.userId; // Retrieved from the middleware
 
@@ -202,6 +196,12 @@ router.get('/refreshtoken', checkRefreshTokenInRedis, async (req: Request, res: 
       error: 'Invalid refresh token / Internal server error',
     });
   }
+});
+
+router.get('/checkaccesstoken', middlewares.authenticateToken, (req: AuthRequest, res: Response) => {
+  return res.status(StatusCodes.OK).json({
+    message: 'Access token valid',
+  });
 });
 
 router.get('/', (req: Request, res: Response) => {
