@@ -43,6 +43,8 @@ export const Route = createFileRoute('/_authenticated')({
           },
         });
       }
+    } else {
+      await auth.checkAccessToken();
     }
   },
   component: Component,

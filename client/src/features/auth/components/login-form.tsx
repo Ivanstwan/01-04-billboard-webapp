@@ -38,8 +38,6 @@ const LoginForm = () => {
   const mutation = useMutation({
     mutationFn: (data: Login) => loginUser(data),
     onSuccess: (data) => {
-      toast.success(data?.message || 'Login successful');
-
       auth.login(data.accessToken || '');
       navigate({ to: '/' });
     },

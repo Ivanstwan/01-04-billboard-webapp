@@ -12,6 +12,7 @@ export interface AuthContext {
   user: DecodedJwt | null;
   isTokenExpired: () => boolean;
   refreshToken: () => Promise<string>;
+  checkAccessToken: () => Promise<void>;
 }
 
 export type DecodedJwt = {
@@ -55,18 +56,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const isAuthenticated = !!user;
 
   const refreshToken = async () => {
-    const token = localStorage.getItem(key);
-
     try {
-      const response = await api.post(
+      const response = await api.get(
         'http://localhost:8000/api/auth/refreshtoken',
-        {
-          // Send the current refresh token or other necessary data
-          access_token: token,
-        },
       );
 
       const { accessToken } = response.data;
+      setStoredUser(accessToken);
       return accessToken;
     } catch (error) {
       logout();
@@ -90,11 +86,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return decodedToken.exp < currentTime;
   };
 
+  const checkAccessToken = async () => {
+    const token = localStorage.getItem(key);
+
+    try {
+      await api.get('http://localhost:8000/api/auth/checkaccesstoken', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+    } catch (error) {
+      toast.error('Session expired');
+      throw redirect({
+        to: '/login',
+        search: {
+          redirect: location.href,
+        },
+      });
+    }
+  };
+
   const logout = React.useCallback(async () => {
     await sleep(250);
 
     setStoredUser(null);
     setUser(null);
+    toast.success('Logged out');
   }, []);
 
   const login = React.useCallback(async (token: string) => {
@@ -102,10 +117,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     setStoredUser(token);
     setUser(getStoredUser());
-  }, []);
-
-  React.useEffect(() => {
-    setUser(getStoredUser());
+    toast.success('Login successful');
   }, []);
 
   return (
@@ -117,6 +129,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         logout,
         isTokenExpired,
         refreshToken,
+        checkAccessToken,
       }}
     >
       {children}
