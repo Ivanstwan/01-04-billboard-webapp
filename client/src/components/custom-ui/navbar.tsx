@@ -20,7 +20,7 @@ const navigationLeft = [
 
 const navigationRight = [
   { name: 'Advertise', to: '/' },
-  { name: 'Manage', to: '/' },
+  { name: 'Manage', to: '/manage' },
   { name: 'Add Listing', to: '/listing/add-listing' },
   { name: 'Rent', to: '/listing' },
   { name: 'Sign in', to: '/login' },

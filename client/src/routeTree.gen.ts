@@ -27,9 +27,13 @@ import { Route as ExampleDashboard03Import } from './routes/_example/dashboard-0
 import { Route as ExampleAuthenticate03Import } from './routes/_example/authenticate-03'
 import { Route as ExampleAuthenticate02Import } from './routes/_example/authenticate-02'
 import { Route as ExampleAuthenticate01Import } from './routes/_example/authenticate-01'
+import { Route as AuthenticatedManageImport } from './routes/_authenticated/_manage'
 import { Route as NotAuthenticatedRegisterIndexImport } from './routes/_not-authenticated/register/index'
 import { Route as NotAuthenticatedRegisterCreateImport } from './routes/_not-authenticated/register/create'
-import { Route as AuthenticatedListingAddListingImport } from './routes/_authenticated/listing/add-listing'
+import { Route as AuthenticatedListingPublicListingImport } from './routes/_authenticated/listing/public-listing'
+import { Route as AuthenticatedManageManageIndexImport } from './routes/_authenticated/_manage/manage/index'
+import { Route as AuthenticatedManageManageMyListingImport } from './routes/_authenticated/_manage/manage/my-listing'
+import { Route as AuthenticatedManageManageAddListingImport } from './routes/_authenticated/_manage/manage/add-listing'
 
 // Create Virtual Routes
 
@@ -112,6 +116,11 @@ const ExampleAuthenticate01Route = ExampleAuthenticate01Import.update({
   getParentRoute: () => ExampleRoute,
 } as any)
 
+const AuthenticatedManageRoute = AuthenticatedManageImport.update({
+  id: '/_manage',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+
 const NotAuthenticatedRegisterIndexRoute =
   NotAuthenticatedRegisterIndexImport.update({
     path: '/register/',
@@ -124,10 +133,28 @@ const NotAuthenticatedRegisterCreateRoute =
     getParentRoute: () => NotAuthenticatedRoute,
   } as any)
 
-const AuthenticatedListingAddListingRoute =
-  AuthenticatedListingAddListingImport.update({
-    path: '/listing/add-listing',
+const AuthenticatedListingPublicListingRoute =
+  AuthenticatedListingPublicListingImport.update({
+    path: '/listing/public-listing',
     getParentRoute: () => AuthenticatedRoute,
+  } as any)
+
+const AuthenticatedManageManageIndexRoute =
+  AuthenticatedManageManageIndexImport.update({
+    path: '/manage/',
+    getParentRoute: () => AuthenticatedManageRoute,
+  } as any)
+
+const AuthenticatedManageManageMyListingRoute =
+  AuthenticatedManageManageMyListingImport.update({
+    path: '/manage/my-listing',
+    getParentRoute: () => AuthenticatedManageRoute,
+  } as any)
+
+const AuthenticatedManageManageAddListingRoute =
+  AuthenticatedManageManageAddListingImport.update({
+    path: '/manage/add-listing',
+    getParentRoute: () => AuthenticatedManageRoute,
   } as any)
 
 // Populate the FileRoutesByPath interface
@@ -175,6 +202,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/listing'
       preLoaderRoute: typeof ListingImport
       parentRoute: typeof rootRoute
+    }
+    '/_authenticated/_manage': {
+      id: '/_authenticated/_manage'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthenticatedManageImport
+      parentRoute: typeof AuthenticatedImport
     }
     '/_example/authenticate-01': {
       id: '/_example/authenticate-01'
@@ -239,11 +273,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NotAuthenticatedLoginImport
       parentRoute: typeof NotAuthenticatedImport
     }
-    '/_authenticated/listing/add-listing': {
-      id: '/_authenticated/listing/add-listing'
-      path: '/listing/add-listing'
-      fullPath: '/listing/add-listing'
-      preLoaderRoute: typeof AuthenticatedListingAddListingImport
+    '/_authenticated/listing/public-listing': {
+      id: '/_authenticated/listing/public-listing'
+      path: '/listing/public-listing'
+      fullPath: '/listing/public-listing'
+      preLoaderRoute: typeof AuthenticatedListingPublicListingImport
       parentRoute: typeof AuthenticatedImport
     }
     '/_not-authenticated/register/create': {
@@ -260,6 +294,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NotAuthenticatedRegisterIndexImport
       parentRoute: typeof NotAuthenticatedImport
     }
+    '/_authenticated/_manage/manage/add-listing': {
+      id: '/_authenticated/_manage/manage/add-listing'
+      path: '/manage/add-listing'
+      fullPath: '/manage/add-listing'
+      preLoaderRoute: typeof AuthenticatedManageManageAddListingImport
+      parentRoute: typeof AuthenticatedManageImport
+    }
+    '/_authenticated/_manage/manage/my-listing': {
+      id: '/_authenticated/_manage/manage/my-listing'
+      path: '/manage/my-listing'
+      fullPath: '/manage/my-listing'
+      preLoaderRoute: typeof AuthenticatedManageManageMyListingImport
+      parentRoute: typeof AuthenticatedManageImport
+    }
+    '/_authenticated/_manage/manage/': {
+      id: '/_authenticated/_manage/manage/'
+      path: '/manage'
+      fullPath: '/manage'
+      preLoaderRoute: typeof AuthenticatedManageManageIndexImport
+      parentRoute: typeof AuthenticatedManageImport
+    }
   }
 }
 
@@ -268,7 +323,12 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren({
   IndexLazyRoute,
   AuthenticatedRoute: AuthenticatedRoute.addChildren({
-    AuthenticatedListingAddListingRoute,
+    AuthenticatedManageRoute: AuthenticatedManageRoute.addChildren({
+      AuthenticatedManageManageAddListingRoute,
+      AuthenticatedManageManageMyListingRoute,
+      AuthenticatedManageManageIndexRoute,
+    }),
+    AuthenticatedListingPublicListingRoute,
   }),
   ExampleRoute: ExampleRoute.addChildren({
     ExampleAuthenticate01Route,
@@ -311,7 +371,8 @@ export const routeTree = rootRoute.addChildren({
     "/_authenticated": {
       "filePath": "_authenticated.tsx",
       "children": [
-        "/_authenticated/listing/add-listing"
+        "/_authenticated/_manage",
+        "/_authenticated/listing/public-listing"
       ]
     },
     "/_example": {
@@ -340,6 +401,15 @@ export const routeTree = rootRoute.addChildren({
     },
     "/listing": {
       "filePath": "listing.tsx"
+    },
+    "/_authenticated/_manage": {
+      "filePath": "_authenticated/_manage.tsx",
+      "parent": "/_authenticated",
+      "children": [
+        "/_authenticated/_manage/manage/add-listing",
+        "/_authenticated/_manage/manage/my-listing",
+        "/_authenticated/_manage/manage/"
+      ]
     },
     "/_example/authenticate-01": {
       "filePath": "_example/authenticate-01.tsx",
@@ -377,8 +447,8 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_not-authenticated/login.tsx",
       "parent": "/_not-authenticated"
     },
-    "/_authenticated/listing/add-listing": {
-      "filePath": "_authenticated/listing/add-listing.tsx",
+    "/_authenticated/listing/public-listing": {
+      "filePath": "_authenticated/listing/public-listing.tsx",
       "parent": "/_authenticated"
     },
     "/_not-authenticated/register/create": {
@@ -388,6 +458,18 @@ export const routeTree = rootRoute.addChildren({
     "/_not-authenticated/register/": {
       "filePath": "_not-authenticated/register/index.tsx",
       "parent": "/_not-authenticated"
+    },
+    "/_authenticated/_manage/manage/add-listing": {
+      "filePath": "_authenticated/_manage/manage/add-listing.tsx",
+      "parent": "/_authenticated/_manage"
+    },
+    "/_authenticated/_manage/manage/my-listing": {
+      "filePath": "_authenticated/_manage/manage/my-listing.tsx",
+      "parent": "/_authenticated/_manage"
+    },
+    "/_authenticated/_manage/manage/": {
+      "filePath": "_authenticated/_manage/manage/index.tsx",
+      "parent": "/_authenticated/_manage"
     }
   }
 }

@@ -10,6 +10,7 @@ import { routeTree } from './routeTree.gen';
 import { AppProvider } from './main-provider';
 import { AuthProvider, useAuth } from './auth';
 import { Toaster } from './components/ui/sonner';
+import { TooltipProvider } from './components/ui/tooltip';
 
 // Create a client
 const queryClient = new QueryClient();
@@ -44,8 +45,10 @@ if (!rootElement.innerHTML) {
     <QueryClientProvider client={queryClient}>
       {/* <QueryClientProvider client={queryClient}> */}
       <AuthProvider>
-        <InnerApp />
-        <Toaster />
+        <TooltipProvider>
+          <InnerApp />
+          <Toaster />
+        </TooltipProvider>
       </AuthProvider>
       {/* </QueryClientProvider> */}
     </QueryClientProvider>,
