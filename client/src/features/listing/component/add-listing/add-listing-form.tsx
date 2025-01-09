@@ -1,4 +1,28 @@
 import React from 'react';
+import {
+  Bird,
+  Book,
+  Bot,
+  Car,
+  Clapperboard,
+  Code2,
+  CornerDownLeft,
+  Image,
+  ImagePlay,
+  LifeBuoy,
+  Mic,
+  MonitorPlay,
+  Paperclip,
+  Rabbit,
+  Settings,
+  Settings2,
+  Share,
+  Signature,
+  SquareTerminal,
+  SquareUser,
+  Triangle,
+  Turtle,
+} from 'lucide-react';
 
 import { useForm } from '@tanstack/react-form';
 import type { FieldApi } from '@tanstack/react-form';
@@ -21,6 +45,7 @@ import { useNavigate } from '@tanstack/react-router';
 
 const ListingSchema = z.object({
   type: z.string(),
+  category: z.string(),
   latitude: z
     .string()
     // Regex to match valid decimal number format with max 6 decimal places
@@ -91,7 +116,7 @@ function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
           {field.state.meta.errors.join(', ')}
         </em>
       ) : null}
-      {field.state.meta.isValidating ? 'Validating...' : null}
+      {/* {field.state.meta.isValidating ? 'Validating...' : null} */}
     </>
   );
 }
@@ -108,7 +133,7 @@ const AddListingForm = () => {
       // Do something with form data
       console.log(value);
       toast.success('Listing added');
-      navigate({ to: '/manage/my-listing' });
+      // navigate({ to: '/manage/my-listing' });
     },
   });
 
@@ -124,65 +149,180 @@ const AddListingForm = () => {
         className="grid w-full items-start gap-6"
       >
         <fieldset className="grid gap-6 rounded-lg border p-4">
-          <legend className="-ml-1 px-1 text-sm font-medium">Settings</legend>
+          <legend className="-ml-1 px-1 text-sm font-medium">
+            Advertisement Type
+          </legend>
           <div className="grid gap-3">
-            <div>
-              <form.Field
-                name="type"
-                validators={{
-                  onChange: ({ value }) =>
-                    !value ? 'A type is required' : undefined,
-                  onChangeAsyncDebounceMs: 500,
-                  onChangeAsync: async ({ value }) => {
-                    await new Promise((resolve) => setTimeout(resolve, 1000));
-                    return (
-                      value.includes('error') && 'No "error" allowed in type'
-                    );
-                  },
-                }}
-                children={(field) => {
-                  // Avoid hasty abstractions. Render props are great!
+            <form.Field
+              name="type"
+              validators={{
+                onChange: ({ value }) =>
+                  !value ? 'A type is required' : undefined,
+                onChangeAsyncDebounceMs: 500,
+                onChangeAsync: async ({ value }) => {
+                  await new Promise((resolve) => setTimeout(resolve, 1000));
                   return (
-                    <>
-                      <Label htmlFor={field.name}>Type:</Label>
-                      <div className="relative flex w-fit items-center">
-                        <select
-                          className="flex h-9 w-[180px] appearance-none items-center justify-between whitespace-nowrap rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1"
-                          id={field.name}
-                          name={field.name}
-                          value={field.state.value}
-                          onChange={(e) => field.handleChange(e.target.value)}
-                        >
-                          <option value="" className="hidden">
-                            Select type
-                          </option>
-                          <option value="A">Billboard</option>
-                          <option value="B">Videotron</option>
-                          <option value="C">LED Screen</option>
-                          <option value="D">Banner</option>
-                          <option value="E">Digital Display</option>
-                        </select>
-                        <svg
-                          width="15"
-                          height="15"
-                          viewBox="0 0 15 15"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="absolute right-3 h-4 w-4 opacity-50"
-                          aria-hidden="true"
-                        >
-                          <path
-                            d="M4.93179 5.43179C4.75605 5.60753 4.75605 5.89245 4.93179 6.06819C5.10753 6.24392 5.39245 6.24392 5.56819 6.06819L7.49999 4.13638L9.43179 6.06819C9.60753 6.24392 9.89245 6.24392 10.0682 6.06819C10.2439 5.89245 10.2439 5.60753 10.0682 5.43179L7.81819 3.18179C7.73379 3.0974 7.61933 3.04999 7.49999 3.04999C7.38064 3.04999 7.26618 3.0974 7.18179 3.18179L4.93179 5.43179ZM10.0682 9.56819C10.2439 9.39245 10.2439 9.10753 10.0682 8.93179C9.89245 8.75606 9.60753 8.75606 9.43179 8.93179L7.49999 10.8636L5.56819 8.93179C5.39245 8.75606 5.10753 8.75606 4.93179 8.93179C4.75605 9.10753 4.75605 9.39245 4.93179 9.56819L7.18179 11.8182C7.35753 11.9939 7.64245 11.9939 7.81819 11.8182L10.0682 9.56819Z"
-                            fill="currentColor"
-                          ></path>
-                        </svg>
-                      </div>
-                      <FieldInfo field={field} />
-                    </>
+                    value.includes('error') && 'No "error" allowed in type'
                   );
-                }}
-              />
-            </div>
+                },
+              }}
+              children={(field) => {
+                // Avoid hasty abstractions. Render props are great!
+                return (
+                  <>
+                    <Label htmlFor={field.name}>Type:</Label>
+                    <div className="relative flex items-center">
+                      <Select
+                        onValueChange={(string) => field.handleChange(string)}
+                      >
+                        <SelectTrigger
+                          id="type"
+                          className="items-start [&_[data-description]]:hidden"
+                        >
+                          <SelectValue placeholder="Select a type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="printed">
+                            <div className="flex items-start gap-3 text-muted-foreground">
+                              <Image className="size-5" />
+                              <div className="grid gap-0.5">
+                                <p>
+                                  <span className="font-medium text-foreground">
+                                    Printed
+                                  </span>
+                                </p>
+                                <p className="text-xs" data-description>
+                                  Traditional printed advertisement. Image
+                                  doesn't move or change.
+                                </p>
+                              </div>
+                            </div>
+                          </SelectItem>
+                          <SelectItem value="digital">
+                            <div className="flex items-start gap-3 text-muted-foreground">
+                              <ImagePlay className="size-5" />
+                              <div className="grid gap-0.5">
+                                <p>
+                                  <span className="font-medium text-foreground">
+                                    Digital
+                                  </span>
+                                </p>
+                                <p className="text-xs" data-description>
+                                  Dynamic advertisements. Using any
+                                  LED/LCD/digital screen for showing
+                                  images/videos.
+                                </p>
+                              </div>
+                            </div>
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <FieldInfo field={field} />
+                  </>
+                );
+              }}
+            />
+            <form.Field
+              name="category"
+              validators={{
+                onChange: ({ value }) =>
+                  !value ? 'A category is required' : undefined,
+                onChangeAsyncDebounceMs: 500,
+                onChangeAsync: async ({ value }) => {
+                  await new Promise((resolve) => setTimeout(resolve, 1000));
+                  return (
+                    value.includes('error') && 'No "error" allowed in category'
+                  );
+                },
+              }}
+              children={(field) => {
+                // Avoid hasty abstractions. Render props are great!
+                return (
+                  <>
+                    <Label htmlFor={field.name}>Category:</Label>
+                    <div className="relative flex items-center">
+                      <Select
+                        onValueChange={(string) => field.handleChange(string)}
+                      >
+                        <SelectTrigger
+                          id="category"
+                          className="items-start [&_[data-description]]:hidden"
+                        >
+                          <SelectValue placeholder="Select a category" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="billboard">
+                            <div className="flex items-start gap-3 text-muted-foreground">
+                              <MonitorPlay className="size-5" />
+                              <div className="grid gap-0.5">
+                                <p>
+                                  <span className="font-medium text-foreground">
+                                    Billboard
+                                  </span>
+                                </p>
+                                <p className="text-xs" data-description>
+                                  Billboard or Videotron (digital billboard)
+                                </p>
+                              </div>
+                            </div>
+                          </SelectItem>
+                          <SelectItem value="theater">
+                            <div className="flex items-start gap-3 text-muted-foreground">
+                              <Clapperboard className="size-5" />
+                              <div className="grid gap-0.5">
+                                <p>
+                                  Movie{' '}
+                                  <span className="font-medium text-foreground">
+                                    Theater
+                                  </span>
+                                </p>
+                                <p className="text-xs" data-description>
+                                  On a movie theater.
+                                </p>
+                              </div>
+                            </div>
+                          </SelectItem>
+                          <SelectItem value="mobile">
+                            <div className="flex items-start gap-3 text-muted-foreground">
+                              <Car className="size-5" />
+                              <div className="grid gap-0.5">
+                                <p>
+                                  <span className="font-medium text-foreground">
+                                    Mobile
+                                  </span>
+                                </p>
+                                <p className="text-xs" data-description>
+                                  On bus/taxi/car/any moving vehicle.
+                                </p>
+                              </div>
+                            </div>
+                          </SelectItem>
+                          <SelectItem value="other">
+                            <div className="flex items-start gap-3 text-muted-foreground">
+                              <Signature className="size-5" />
+                              <div className="grid gap-0.5">
+                                <p>
+                                  Unique{' '}
+                                  <span className="font-medium text-foreground">
+                                    Other
+                                  </span>
+                                </p>
+                                <p className="text-xs" data-description>
+                                  Advertisement medium that is not on the list
+                                  yet.
+                                </p>
+                              </div>
+                            </div>
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <FieldInfo field={field} />
+                  </>
+                );
+              }}
+            />
           </div>
         </fieldset>
         <fieldset className="grid gap-6 rounded-lg border p-4">
