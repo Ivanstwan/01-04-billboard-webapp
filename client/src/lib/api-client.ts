@@ -1,18 +1,29 @@
 import Axios, { InternalAxiosRequestConfig } from 'axios';
 
 function authRequestInterceptor(config: InternalAxiosRequestConfig) {
-  if (config.headers) {
-    config.headers.Accept = 'application/json';
+  const token = localStorage.getItem('access_token');
+  if (token && config.headers) {
+    config.headers.Authorization = `Bearer ${token}`;
   }
-
-  config.withCredentials = true;
   return config;
 }
 
 const api = Axios.create({
-  baseURL: 'http://localhost:3000',
+  baseURL: 'http://localhost:8000',
+  headers: {
+    Accept: 'application/json',
+  },
+  withCredentials: true,
 });
 
-api.interceptors.request.use(authRequestInterceptor);
+const authApi = Axios.create({
+  baseURL: 'http://localhost:8000',
+  headers: {
+    Accept: 'application/json',
+  },
+  withCredentials: true,
+});
 
-export default api;
+authApi.interceptors.request.use(authRequestInterceptor);
+
+export { api, authApi };

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { sleep } from './lib/utils';
 import jwtDecode from 'jwt-decode';
-import api from './lib/api-client';
+import { api } from './lib/api-client';
 import { redirect } from '@tanstack/react-router';
 import { toast } from 'sonner';
 
@@ -57,9 +57,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const refreshToken = async () => {
     try {
-      const response = await api.get(
-        'http://localhost:8000/api/auth/refreshtoken',
-      );
+      const response = await api.get('/api/auth/refreshtoken');
 
       const { accessToken } = response.data;
       setStoredUser(accessToken);
@@ -90,7 +88,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const token = localStorage.getItem(key);
 
     try {
-      await api.get('http://localhost:8000/api/auth/checkaccesstoken', {
+      await api.get('/api/auth/checkaccesstoken', {
         headers: { Authorization: `Bearer ${token}` },
       });
     } catch (error) {
